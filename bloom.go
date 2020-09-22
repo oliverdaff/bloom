@@ -1,9 +1,11 @@
 package bloom
 
-import "math"
+import (
+	"math"
+)
 
 func findBitCoords(index uint) (uint, uint) {
-	byteIndex := uint(math.Ceil(float64(index) / float64(8)))
-	bitOffset := index % 8
+	byteIndex := uint(math.Floor(float64(index) / float64(64)))
+	bitOffset := index % 64
 	return byteIndex, bitOffset
 }
