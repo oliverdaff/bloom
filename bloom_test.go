@@ -1,6 +1,7 @@
 package bloom
 
 import (
+	"bytes"
 	"fmt"
 	"testing"
 )
@@ -11,11 +12,8 @@ func TestFindBitCoords(t *testing.T) {
 		byteIndex, bitOffset uint
 	}{
 		{4, 0, 4},
-		{8, 0, 8},
-		{9, 0, 9},
-		{63, 0, 63},
-		{64, 1, 0},
-		{65, 1, 1},
+		{8, 1, 0},
+		{9, 1, 1},
 	}
 	for _, tt := range tests {
 		testname := fmt.Sprintf("%d", tt.index)
@@ -28,5 +26,27 @@ func TestFindBitCoords(t *testing.T) {
 				t.Errorf("index %d, got bitOffset %d, want %d", tt.index, bitOffset, tt.bitOffset)
 			}
 		})
+	}
+}
+
+func TestWriteBit(t *testing.T) {
+	var tests = []struct {
+		inbits, outbits []byte
+		index           uint
+	}{
+		{[]byte{0}, []byte{1}, 0},
+		{[]byte{0}, []byte{2}, 1},
+		{[]byte{0}, []byte{4}, 2},
+	}
+	for _, tt := range tests {
+		testname := fmt.Sprintf("%d", tt.index)
+		t.Run(testname, func(t *testing.T) {
+			result := writeBit(tt.inbits, tt.index)
+			if !bytes.Equal(result, tt.outbits) {
+				t.Errorf("Index %d input %d got %d expected %d",
+					tt.index, tt.inbits, result, tt.outbits)
+			}
+		})
+
 	}
 }
