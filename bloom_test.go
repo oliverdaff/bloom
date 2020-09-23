@@ -50,3 +50,26 @@ func TestWriteBit(t *testing.T) {
 
 	}
 }
+
+func TestReadBit(t *testing.T) {
+	var tests = []struct {
+		inbits   []byte
+		index    uint
+		expected uint8
+	}{
+		{[]byte{1}, 0, 1},
+		{[]byte{1, 1}, 8, 1},
+		{[]byte{1, 1}, 9, 0},
+	}
+	for _, tt := range tests {
+		testname := fmt.Sprintf("%d", tt.index)
+		t.Run(testname, func(t *testing.T) {
+			result := readBit(tt.inbits, tt.index)
+			if result != tt.expected {
+				t.Errorf("Index %d input %d got %d expected %d",
+					tt.index, tt.inbits, result, tt.expected)
+			}
+		})
+
+	}
+}
