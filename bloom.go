@@ -34,6 +34,16 @@ func (bf *BloomFilter) Contains(key []byte) bool {
 	return bf.positionContains(key, positions)
 }
 
+func (bf *BloomFilter) Insert(key []byte) {
+	positions := key2Position(bf.hashFunctions, bf.seed, key)
+	if !bf.positionContains(key, positions) {
+		bf.size++
+		for _, pos := range positions {
+			writeBit(bf.bitsArray, pos)
+		}
+	}
+}
+
 func (bf *BloomFilter) positionContains(key []byte, positions []uint32) bool {
 	for _, pos := range positions {
 		if readBit(bf.bitsArray, pos) != 0 {
