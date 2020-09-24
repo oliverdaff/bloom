@@ -76,11 +76,11 @@ func TestReadBit(t *testing.T) {
 
 func TestNewBloomFilter(t *testing.T) {
 	var tests = []struct {
-		maxSize, seed uint32
-		maxTolerance  float64
-		numBits       uint32
+		maxSize, seed                          uint32
+		maxTolerance                           float64
+		numBits, numElements, numHashFunctions uint32
 	}{
-		{100, 1, 0.01, 958},
+		{100, 1, 0.01, 958, 120, 6},
 	}
 	for _, tt := range tests {
 		testname := fmt.Sprintf("maxSize %d seed %d, maxTolerance %f",
@@ -95,6 +95,12 @@ func TestNewBloomFilter(t *testing.T) {
 			}
 			if bf.numBits != tt.numBits {
 				t.Errorf("NumBits %d and expected %d", bf.numBits, tt.numBits)
+			}
+			if bf.numElements != tt.numElements {
+				t.Errorf("NumElements %d and expected %d", bf.numElements, tt.numElements)
+			}
+			if bf.numHashFunctions != tt.numHashFunctions {
+				t.Errorf("NumHashFunctions %d and expected %d", bf.numHashFunctions, tt.numHashFunctions)
 			}
 		})
 
