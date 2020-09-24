@@ -14,7 +14,8 @@ type BloomFilter struct {
 }
 
 func NewBloomFilter(maxSize uint32, maxTolerance float64, seed uint32) *BloomFilter {
-	numBits := uint32(math.Ceil(float64(maxSize) * math.Log(maxTolerance) / math.Log(2) / math.Log(2)))
+	numBits := uint32(-(math.Ceil(float64(maxSize) * math.Log(maxTolerance) / math.Log(2) / math.Log(2))))
+
 	numElements := uint32(math.Ceil(float64(numBits) / 8))
 	numHashFunctions := uint32(-math.Ceil(math.Log2(maxTolerance)))
 	return &BloomFilter{
