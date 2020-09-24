@@ -29,19 +29,33 @@ func NewBloomFilter(maxSize uint32, maxTolerance float64, seed uint32) *BloomFil
 	}
 }
 
+func (bf *BloomFilter) Contains(key []byte) bool {
+	positions := key2Position(bf.hashFunctions, bf.seed, key)
+	return bf.positionContains(key, positions)
+}
+
+func (bf *BloomFilter) positionContains(key []byte, positions []uint32) bool {
+	for _, pos := range positions {
+		if readBit(bf.bitsArray, pos) != 0 {
+			return false
+		}
+	}
+	return true
+}
+
 //
-func findBitCoords(index uint) (uint, uint) {
-	byteIndex := uint(math.Floor(float64(index) / float64(8)))
+func findBitCoords(index uint32) (uint32, uint32) {
+	byteIndex := uint32(math.Floor(float64(index) / float64(8)))
 	bitOffset := index % 8
 	return byteIndex, bitOffset
 }
 
-func readBit(bitsArray []byte, index uint) uint8 {
+func readBit(bitsArray []byte, index uint32) uint8 {
 	element, bit := findBitCoords(index)
 	return uint8((bitsArray[element] & (1 << bit)) >> bit)
 }
 
-func writeBit(bitsArray []byte, index uint) []byte {
+func writeBit(bitsArray []byte, index uint32) []byte {
 	element, bit := findBitCoords(index)
 	bitsArray[element] = bitsArray[element] | (1 << bit)
 	return bitsArray

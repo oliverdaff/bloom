@@ -8,8 +8,8 @@ import (
 
 func TestFindBitCoords(t *testing.T) {
 	var tests = []struct {
-		index                uint
-		byteIndex, bitOffset uint
+		index                uint32
+		byteIndex, bitOffset uint32
 	}{
 		{4, 0, 4},
 		{8, 1, 0},
@@ -32,7 +32,7 @@ func TestFindBitCoords(t *testing.T) {
 func TestWriteBit(t *testing.T) {
 	var tests = []struct {
 		inbits, outbits []byte
-		index           uint
+		index           uint32
 	}{
 		{[]byte{0}, []byte{1}, 0},
 		{[]byte{0}, []byte{2}, 1},
@@ -54,7 +54,7 @@ func TestWriteBit(t *testing.T) {
 func TestReadBit(t *testing.T) {
 	var tests = []struct {
 		inbits   []byte
-		index    uint
+		index    uint32
 		expected uint8
 	}{
 		{[]byte{1}, 0, 1},
