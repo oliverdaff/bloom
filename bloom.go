@@ -1,8 +1,10 @@
 package bloom
 
 import (
+	"fmt"
 	"hash/fnv"
 	"math"
+	"math/big"
 
 	"github.com/spaolacci/murmur3"
 )
@@ -13,8 +15,24 @@ type BloomFilter struct {
 	hashFunctions                                               []func(uint32, uint32) uint32
 }
 
-func NewBloomFilter(maxSize uint32, maxTolerance float64, seed uint32) *BloomFilter {
-	numBits := uint32(-math.Ceil(float64(maxSize) * math.Log(maxTolerance) / math.Log(2) / math.Log(2)))
+func NewBloomFilter(maxSize uint32, maxTolerance float64, seed uint32) (*BloomFilter, error) {
+	bigLog2 := big.NewFloat(math.Log(2))
+
+	bigMax := new(big.Float)
+	bigMax.SetUint64(uint64(maxSize))
+	bigMaxTolerance := big.NewFloat(math.Log(maxTolerance))
+	mutResult := new(big.Float)
+	numBits64, acc := mutResult.Mul(bigMax, bigMaxTolerance).
+		Quo(mutResult, bigLog2).Quo(mutResult, bigLog2).
+		Neg(mutResult).Int64()
+	if acc != big.Exact {
+		numBits64++
+	}
+	if numBits64 > int64(^uint32(0)) {
+		return &BloomFilter{}, fmt.Errorf("Number of bits too large than %d", ^uint32(0))
+	}
+
+	numBits := uint32(numBits64)
 
 	numElements := uint32(math.Ceil(float64(numBits) / 8))
 	numHashFunctions := uint32(-math.Ceil(math.Log2(maxTolerance)))
@@ -27,7 +45,7 @@ func NewBloomFilter(maxSize uint32, maxTolerance float64, seed uint32) *BloomFil
 		numHashFunctions: numHashFunctions,
 		bitsArray:        make([]byte, numElements),
 		hashFunctions:    initHashFunctions(numHashFunctions, numBits),
-	}
+	}, nil
 }
 
 func (bf *BloomFilter) Contains(key []byte) bool {

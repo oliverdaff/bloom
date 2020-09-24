@@ -79,14 +79,22 @@ func TestNewBloomFilter(t *testing.T) {
 		maxSize, seed                          uint32
 		maxTolerance                           float64
 		numBits, numElements, numHashFunctions uint32
+		expectErr                              bool
 	}{
-		{100, 1, 0.01, 958, 120, 6},
+		{100, 1, 0.01, 959, 120, 6, false},
+		{^uint32(0), 1, 0.00001, 958, 120, 6, true},
 	}
 	for _, tt := range tests {
 		testname := fmt.Sprintf("maxSize %d seed %d, maxTolerance %f",
 			tt.maxSize, tt.seed, tt.maxTolerance)
 		t.Run(testname, func(t *testing.T) {
-			bf := NewBloomFilter(tt.maxSize, tt.maxTolerance, tt.seed)
+			bf, err := NewBloomFilter(tt.maxSize, tt.maxTolerance, tt.seed)
+			if tt.expectErr && err == nil {
+				t.Errorf("Expect construction error")
+			}
+			if tt.expectErr && err != nil {
+				return
+			}
 			if bf.size != 0 {
 				t.Errorf("Size %d and expected 0", bf.size)
 			}
