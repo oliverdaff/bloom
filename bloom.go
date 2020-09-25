@@ -59,6 +59,8 @@ func NewBloomFilter(maxSize uint32, maxTolerance float64, seed uint32) (*BloomFi
 	}, nil
 }
 
+// Contains returns false if the key is definitely not contained in the set
+// else returns true if the key might be in the set.
 func (bf *BloomFilter) Contains(key []byte) bool {
 	positions := key2Position(bf.hashFunctions, bf.seed, key)
 	return bf.positionContains(key, positions)
