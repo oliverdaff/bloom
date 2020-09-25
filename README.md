@@ -11,6 +11,7 @@ murmur3 and fnv1 hashing to calculate which bits to set.
 ## API
 
 __Create new Bloom filter__
+
 A new BloomFilter is created using the `NewBloomFilter` function,
 parameterized by:
 *   `maxSize` - the maximum number of elements expected in the set.
@@ -30,6 +31,7 @@ bloom.Insert([2,3,23,200])
 ```
 
 __Contains__
+
 Check if the key is contained in the set using `Contains`.
 
 ```go
