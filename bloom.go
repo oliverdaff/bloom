@@ -16,6 +16,9 @@ type BloomFilter struct {
 }
 
 func NewBloomFilter(maxSize uint32, maxTolerance float64, seed uint32) (*BloomFilter, error) {
+	if maxSize == 0 {
+		return nil, fmt.Errorf("Max Size is 0")
+	}
 	bigLog2 := big.NewFloat(math.Log(2))
 
 	bigMax := new(big.Float)
@@ -29,7 +32,7 @@ func NewBloomFilter(maxSize uint32, maxTolerance float64, seed uint32) (*BloomFi
 		numBits64++
 	}
 	if numBits64 > int64(^uint32(0)) {
-		return &BloomFilter{}, fmt.Errorf("Number of bits too large than %d", ^uint32(0))
+		return nil, fmt.Errorf("Number of bits too large than %d", ^uint32(0))
 	}
 
 	numBits := uint32(numBits64)

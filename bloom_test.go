@@ -82,6 +82,8 @@ func TestNewBloomFilter(t *testing.T) {
 		expectErr                              bool
 	}{
 		{100, 1, 0.01, 959, 120, 6, false},
+		{1, 1, 0.01, 10, 2, 6, false},
+		{0, 1, 0.00001, 958, 120, 6, true},
 		{^uint32(0), 1, 0.00001, 958, 120, 6, true},
 	}
 	for _, tt := range tests {
