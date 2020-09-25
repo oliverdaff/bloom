@@ -66,6 +66,7 @@ func (bf *BloomFilter) Contains(key []byte) bool {
 	return bf.positionContains(key, positions)
 }
 
+// Insert adds the key to the set in the BloomFilter.
 func (bf *BloomFilter) Insert(key []byte) {
 	positions := key2Position(bf.hashFunctions, bf.seed, key)
 	if !bf.positionContains(key, positions) {
@@ -85,6 +86,8 @@ func (bf *BloomFilter) positionContains(key []byte, positions []uint32) bool {
 	return true
 }
 
+// FalsePositiveProbability returns the probability of a false
+// positive being returned by BloomFilter.
 func (bf *BloomFilter) FalsePositiveProbability() float64 {
 	return math.Pow(
 		1-math.Exp(float64(bf.numHashFunctions)*float64(bf.size)/
