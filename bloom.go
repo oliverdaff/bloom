@@ -75,7 +75,13 @@ func (bf *BloomFilter) positionContains(key []byte, positions []uint32) bool {
 	return true
 }
 
-//
+func (bf *BloomFilter) FalsePositiveProbability() float64 {
+	return math.Pow(
+		1-math.Exp(float64(bf.numHashFunctions)*float64(bf.size)/
+			float64(bf.numBits)),
+		float64(bf.numHashFunctions))
+}
+
 func findBitCoords(index uint32) (uint32, uint32) {
 	byteIndex := uint32(math.Floor(float64(index) / float64(8)))
 	bitOffset := index % 8
