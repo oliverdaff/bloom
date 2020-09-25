@@ -9,6 +9,10 @@ import (
 	"github.com/spaolacci/murmur3"
 )
 
+// BloomFilter is a datastructure to tell if a element is present in a set.
+// The BloomFilter trades accuracy for space.  The contains method returns
+// false if the element is definitely not present but true if the element
+// might be in the set.
 type BloomFilter struct {
 	maxSize, size, seed, numBits, numHashFunctions, numElements uint32
 	bitsArray                                                   []byte
