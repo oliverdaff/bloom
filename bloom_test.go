@@ -119,23 +119,34 @@ func TestNewBloomFilter(t *testing.T) {
 
 func TestContains(t *testing.T) {
 	var tests = []struct {
-		keys [][]byte
+		keys        [][]byte
+		invalidKeys [][]byte
 	}{
 		{[][]byte{
 			{0},
 			{1, 2, 3, 4},
-		}},
+		},
+			[][]byte{
+				{1},
+				{255},
+			},
+		},
 	}
 	for _, tt := range tests {
 		testname := fmt.Sprintf("%d", tt.keys)
 		t.Run(testname, func(t *testing.T) {
-			if bloom, err := NewBloomFilter(100, 0.001, 42); err != nil {
+			if bloom, err := NewBloomFilter(10000, 0.001, 42); err != nil {
 				t.Errorf("Error creating BloomFilter")
 			} else {
 				for _, key := range tt.keys {
 					bloom.Insert(key)
 					if !bloom.Contains(key) {
 						t.Errorf("Expected BloomFilter to contains %d", key)
+					}
+				}
+				for _, key := range tt.invalidKeys {
+					if bloom.Contains(key) {
+						t.Errorf("Expected BloomFilter to not contain %d", key)
 					}
 				}
 			}

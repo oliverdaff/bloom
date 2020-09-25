@@ -79,7 +79,7 @@ func (bf *BloomFilter) Insert(key []byte) {
 
 func (bf *BloomFilter) positionContains(key []byte, positions []uint32) bool {
 	for _, pos := range positions {
-		if readBit(bf.bitsArray, pos) != 0 {
+		if readBit(bf.bitsArray, pos) == 0 {
 			return false
 		}
 	}
