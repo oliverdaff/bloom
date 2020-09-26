@@ -1,6 +1,5 @@
-package bloom
-
 // Package bloom is an implementation of Bloom filter.
+package bloom
 
 import (
 	"fmt"
@@ -22,9 +21,10 @@ type BloomFilter struct {
 }
 
 // NewBloomFilter allocates a new BloomFilter parameterised by the arguments.
-//	maxSize - the maximum number of elements the filter is expected to hold (must be > 0)
-//  maxTolerance - the expected accuracy (a sensible default is 0.01)
-//  seed - the seed to use for hashFunctions.
+//
+// 	maxSize - the maximum number of elements the filter is expected to hold (must be > 0)
+// 	maxTolerance - the expected accuracy (a sensible default is 0.01)
+// 	seed - the seed to use for hashFunctions.
 func NewBloomFilter(maxSize uint32, maxTolerance float64, seed uint32) (*BloomFilter, error) {
 	if maxSize == 0 {
 		return nil, fmt.Errorf("Max Size is 0")
