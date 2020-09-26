@@ -1,6 +1,7 @@
 # bloom
 
-[![Go Report Card](https://goreportcard.com/badge/github.com/oliverdaff/bloom)](https://goreportcard.com/report/github.com/oliverdaff/bloom)
+
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/oliverdaff/bloom)](https://pkg.go.dev/github.com/oliverdaff/bloom) [![Go Report Card](https://goreportcard.com/badge/github.com/oliverdaff/bloom)](https://goreportcard.com/report/github.com/oliverdaff/bloom) [![CircleCI](https://circleci.com/gh/oliverdaff/bloom.svg?style=shield)](https://circleci.com/gh/oliverdaff/bloom)
 
 A simple bloom filter written in Go. 
 
