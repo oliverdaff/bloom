@@ -116,7 +116,9 @@ func writeBit(bitsArray []byte, index uint32) []byte {
 
 func key2Position(hashFunctions []func(uint32, uint32) uint32,
 	seed uint32, key []byte) []uint32 {
-	hM := murmur3.Sum32WithSeed(key, seed)
+	hasherM := murmur3.New32WithSeed(seed)
+	hasherM.Write(key)
+	hM := hasherM.Sum32()
 	hasherV := fnv.New32()
 	hasherV.Write(key)
 	hV := hasherV.Sum32()
