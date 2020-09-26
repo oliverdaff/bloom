@@ -1,5 +1,7 @@
 package bloom
 
+// Package bloom is an implementation of Bloom filter.
+
 import (
 	"fmt"
 	"hash/fnv"
