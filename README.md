@@ -1,5 +1,7 @@
 # bloom
 
+[![Go Report Card](https://goreportcard.com/badge/github.com/oliverdaff/bloom)](https://goreportcard.com/report/github.com/oliverdaff/bloom)
+
 A simple bloom filter written in Go. 
 
 A Bloom filter is a probabilistic data structure for set membership
